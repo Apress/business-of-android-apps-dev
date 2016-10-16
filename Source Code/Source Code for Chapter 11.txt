@@ -1,0 +1,6 @@
+Source Code for Chapter 11:
+
+android: versionCode = "1"
+android: versionName = "1.0"
+
+

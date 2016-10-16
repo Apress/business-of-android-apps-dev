@@ -1,0 +1,117 @@
+Source Code for Chapter 7
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.example.dungeons"
+  android:versionCode="1"
+  android:versionName="1.0">
+
+  <uses-permission android:name="com.android.vending.BILLING" />
+
+  <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <activity android:name=".Dungeons" android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <service android:name="BillingService" />
+
+    <receiver android:name="BillingReceiver">
+      <intent-filter>
+        <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
+        <action android:name="com.android.vending.billing.RESPONSE_CODE" />
+        <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
+      </intent-filter>
+    </receiver>
+
+  </application>
+</manifest>
+
+
+try {
+  boolean bindResult = mContext.bindService(
+    new Intent("com.android.vending.billing.MarketBillingService.BIND"), this,
+    Context.BIND_AUTO_CREATE);
+  if (bindResult) {
+    Log.i(TAG, "Service bind successful.");
+  } else {
+    Log.e(TAG, "Could not bind to the MarketBillingService.");
+  }
+} catch (SecurityException e) {
+  Log.e(TAG, "Security exception: " + e);
+}
+
+
+/**
+  * The Android system calls this when we are connected to the MarketBillingService.
+  */
+  public void onServiceConnected(ComponentName name, IBinder service) {
+    Log.i(TAG, "MarketBillingService connected.");
+    mService = IMarketBillingService.Stub.asInterface(service);
+  }
+
+
+public class BillingReceiver extends BroadcastReceiver {
+  
+  private static final String TAG = "BillingReceiver";
+  
+  // Intent actions that we receive in the BillingReceiver from Android Market.
+  // These are defined by Android Market and cannot be changed.
+  // The sample application defines these in the Consts.java file.
+  public static final String ACTION_NOTIFY = "com.android.vending.billing.IN_APP_NOTIFY";
+  public static final String ACTION_RESPONSE_CODE = "com.android.vending.billing.RESPONSE_CODE";
+  public static final String ACTION_PURCHASE_STATE_CHANGED =
+    "com.android.vending.billing.PURCHASE_STATE_CHANGED";
+    
+  // The intent extras that are passed in an intent from Android Market.
+  // These are defined by Android Market and cannot be changed.
+  // The sample application defines these in the Consts.java file.
+  public static final String NOTIFICATION_ID = "notification_id";
+  public static final String INAPP_SIGNED_DATA = "inapp_signed_data";
+  public static final String INAPP_SIGNATURE = "inapp_signature";
+  public static final String INAPP_REQUEST_ID = "request_id";
+  public static final String INAPP_RESPONSE_CODE = "response_code";
+
+
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    String action = intent.getAction();
+    if (ACTION_PURCHASE_STATE_CHANGED.equals(action)) {
+      String signedData = intent.getStringExtra(INAPP_SIGNED_DATA);
+      String signature = intent.getStringExtra(INAPP_SIGNATURE);
+      // Do something with the signedData and the signature.
+    } else if (ACTION_NOTIFY.equals(action)) {
+      String notifyId = intent.getStringExtra(NOTIFICATION_ID);
+      // Do something with the notifyId.
+    } else if (ACTION_RESPONSE_CODE.equals(action)) {
+      long requestId = intent.getLongExtra(INAPP_REQUEST_ID, -1);
+      int responseCodeIndex = intent.getIntExtra(INAPP_RESPONSE_CODE,
+        ResponseCode.RESULT_ERROR.ordinal());
+      // Do something with the requestId and the responseCodeIndex.
+    } else {
+      Log.w(TAG, "unexpected action: " + action);
+    }
+  }
+  // Perform other processing here, such as forwarding intent messages to your local service.
+}
+
+
+private static final SecureRandom RANDOM = new SecureRandom();
+  private static HashSet<Long> sKnownNonces = new HashSet<Long>();
+
+  public static long generateNonce() {
+    long nonce = RANDOM.nextLong();
+    sKnownNonces.add(nonce);
+    return nonce;
+  }
+
+  public static void removeNonce(long nonce) {
+    sKnownNonces.remove(nonce);
+  }
+
+  public static boolean isNonceKnown(long nonce) {
+    return sKnownNonces.contains(nonce);
+  }
+ 

@@ -1,0 +1,277 @@
+Source Code for Chapter 12
+
+
+class Chair {
+int legs = 4;
+int height = 36;
+String material = “Wood”;
+}
+
+class Chair {
+int legs = 4;
+int height = 36;
+String material = “Wood”;
+String position = “Pushed in”;
+}
+
+
+class Table {
+int legs = 1;
+int height = 37;
+String material = “Metal”;
+}
+class Table {
+int legs = 1;
+int height = 37;
+String material = “Metal”;
+String shape = “Rectangular”;
+}
+
+
+void moveChair (String newPosition) {
+position = newPosition;
+}
+
+
+Public void onCreate (Bundle savedInstanceState) {
+	Super.onCreate(savedInstanceState);
+	setContentView(R.layout.main);
+	
+Chair chairOne = new Chair();
+	Chair chairTwo = new Chair();
+	
+chairOne.moveChair(forward);
+
+	chairTwo.moveChair(back);
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+</LinearLayout>  
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    >
+<Button android:layout_height="wrap_content" 
+    		android:id="@+id/btnWelcome" 
+    		android:layout_width="wrap_content" 
+    		android:text="Welcome" 
+    		android:layout_alignParentTop="true" 
+    		android:layout_centerHorizontal="true" 
+    		android:layout_marginTop="187dp">
+    </Button>
+    <Button android:layout_height="wrap_content" 
+    		android:id="@+id/btnWebsite" 
+    		android:layout_width="wrap_content" 
+    		android:text="Website" 
+    		android:layout_below="@+id/btnWelcome" 
+    		android:layout_centerHorizontal="true">
+    </Button>
+</RelativeLayout>
+
+
+
+package New.Project;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class NewProjectActivity extends Activity {
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+    }
+}
+
+
+import android.view.View;
+import android.view.View.OnClickListener;
+
+
+Button btnWelcome = (Button)findViewById(R.id.btnWelcome);
+        btnWelcome.setOnClickListener(this);
+Button btnWebsite = (Button)findViewById(R.id.btnWebsite);
+        btnWebsite.setOnClickListener(this);
+    }
+public void onClick(View v) {
+    	Button button = (Button)v;
+    	//Intent intent;
+
+
+switch (button.getId()) {
+
+case R.id.btnWelcome:
+PopupMessage("Welcome to this Application!”,  “If everything goes right, you should see this window.”);
+    			break;
+default:
+			PopupMessage("Something Clicked!", "This button does not do anything yet.  Please stay tuned!");
+			break;
+    	}  	
+    }
+
+
+
+    public void PopupMessage(CharSequence title, CharSequence message) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle(title)
+		.setMessage(message)
+		.setIcon(R.drawable.icon)
+		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+			}
+		});
+	builder.show();
+    
+    }
+}
+
+
+case R.id.btnWebsite:
+    		intent = new Intent(v.getContext(), WebsiteActivity.class);
+    		startActivity(intent);
+    		break;
+
+
+
+package New.Project;
+
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+public class NewProjectActivity extends Activity implements OnClickListener{
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+
+        Button btnWelcome = (Button)findViewById(R.id.btnWelcome);
+        btnWelcome.setOnClickListener(this);
+        Button btnWebsite = (Button)findViewById(R.id.btnWebsite);
+        btnWebsite.setOnClickListener(this);
+    }
+    public void onClick(View v) {
+    	Button button = (Button)v;
+    	Intent intent;
+    	
+    	switch (button.getId()) {
+    		case R.id.btnWelcome:
+    			PopupMessage("Welcome to this application!", "If everything goes all right, you should see this window.");
+    			break;
+    		case R.id.btnWebsite:
+    		intent = new Intent(v.getContext(), WebsiteActivity.class);
+    		startActivity(intent);
+    		break;
+    		
+			default:
+				PopupMessage("Something Clicked!", "This button does not do anything yet.  Please stay tuned!");
+				break;
+    	}  	
+    }
+    
+    public void PopupMessage(CharSequence title, CharSequence message) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle(title)
+		.setMessage(message)
+		.setIcon(R.drawable.icon)
+		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+			}
+		});
+	builder.show();
+    
+    }
+}
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<WebView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/webview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+/>
+
+
+
+package New.Project;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+public class WebsiteActivity extends Activity implements OnClickListener  {
+	WebView webView;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.website);
+        
+        webView = (WebView) findViewById(R.id.webview);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("http://google.com");
+        
+        webView.setWebViewClient(new HelloWebViewClient());
+    }
+    
+    public void onClick(View v) {
+    }
+    
+    private class HelloWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+    }
+    
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+}
+
+
+<activity android:name=".WebsiteActivity" android:label="Welcome to the Website" android:theme="@android:style/Theme.NoTitleBar">
+        	<intent-filter android:label="Welcome to the Website">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="New.Project"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+

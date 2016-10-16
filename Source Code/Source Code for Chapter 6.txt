@@ -1,0 +1,35 @@
+Source Code for Chapter 6
+
+Go into the AndroidManifest file and add the following code right before the last <application> and <manifest>:
+<application android:icon="@drawable/icon" android:label="@string/app_name"
+               android:debuggable="true">
+    <activity android:label="@string/app_name" android:name="BannerExample">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
+
+
+You will have to add this line of code in the manifest as well:
+
+
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+You will then need to add this to the main.xml program:
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+  <com.google.ads.AdView android:id="@+id/adView"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         ads:adUnitId="MY_AD_UNIT_ID"
+                         ads:adSize="BANNER"
+                         ads:loadAdOnCreate="true"/>
+</LinearLayout>
